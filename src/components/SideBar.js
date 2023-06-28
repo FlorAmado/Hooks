@@ -53,13 +53,13 @@ function SideBar(){
                 </li>
 
                 {/*<!-- Nav Item - Tables -->*/}
-                <li className="nav-item nav-link">
+                <li className="nav-item">
                 <Link className="nav-link" to="/ContentRowMovies">
                         <i className="fas fa-fw fa-table"></i>
                         <span>Tables</span></Link>
                 </li>
                 {/*<!-- Nav Item - Search -->*/}
-                <li className="nav-item nav-link">
+                <li className="nav-item">
                 <Link className="nav-link" to="/Search">
                 <i class="fas fa-search"></i>
                         <span>Search</span></Link>
