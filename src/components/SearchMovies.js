@@ -1,5 +1,6 @@
 import React from 'react';
-import {useState,useEffect,useRef} from 'react';
+import {useState,useEffect} from 'react';
+import image from '../assets/images/default-img.png'
 
 function SearchMovies(){
 
@@ -69,7 +70,7 @@ function SearchMovies(){
 												<div className="text-center">
 													<img 
 														className="img-fluid px-3 px-sm-4 mt-3 mb-4" 
-														src={movie.Poster}
+														src={movie.Poster != 'N/A' ? movie.Poster : image}
 														alt={movie.Title} 
 														style={{ width: '90%', height: '400px', objectFit: 'cover' }} 
 													/>
