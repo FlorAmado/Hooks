@@ -1,27 +1,40 @@
 import React from 'react';
-
-import noPoster from '../assets/images/no-poster.jpg';
+import {useState,useEffect,useRef} from 'react';
 
 function SearchMovies(){
 
-	const movies = [
-		{
-			"Title": "Parchís",
-			"Year": "1983",
-			"Poster": "https://m.media-amazon.com/images/M/MV5BYTgxNjg2MTAtYjhmYS00NjQwLTk1YTMtNmZmOTMyNTAwZWUwXkEyXkFqcGdeQXVyMTY5MDE5NA@@._V1_SX300.jpg"
-		},
-		{
-			"Title": "Brigada en acción",
-			"Year": "1977",
-			"Poster": "N/A"
-		},
-	];
-
-	const keyword = 'PELÍCULA DEMO';
 
 	// Credenciales de API
-	const apiKey = 'X'; // Intenta poner cualquier cosa antes para probar
+	const apiKey = 'c202a58'; // Intenta poner cualquier cosa antes para probar
 
+	const [state, setState] = useState({movies: []});
+
+	const [keyword, setkeyword] = useState('');
+
+
+	useEffect(() =>{
+		if (keyword) {
+		fetch(`http://www.omdbapi.com/?s=${keyword}&apikey=${apiKey}`)
+		.then(response => response.json())
+		.then(data =>{
+			console.log(data);
+			setState(prevState => ({
+				...prevState,
+				movies: data.Search || []
+			}));
+		})
+		.catch(error => console.log(error))
+		
+	}
+	}, [keyword]);
+
+
+	const handleSearch = e => {
+		e.preventDefault()
+
+		setkeyword('')
+	}
+	
 	return(
 		<div className="container-fluid">
 			{
@@ -30,12 +43,12 @@ function SearchMovies(){
 					<div className="row my-4">
 						<div className="col-12 col-md-6">
 							{/* Buscador */}
-							<form method="GET">
+							<form method="GET" onSubmit={handleSearch}>
 								<div className="form-group">
 									<label htmlFor="">Buscar por título:</label>
-									<input type="text" className="form-control" />
+									<input type="text" className="form-control" value={keyword} onChange={e => setkeyword(e.target.value)} />
 								</div>
-								<button className="btn btn-info">Search</button>
+								{/* <button className="btn btn-info">Search</button> */}
 							</form>
 						</div>
 					</div>
@@ -45,7 +58,7 @@ function SearchMovies(){
 						</div>
 						{/* Listado de películas */}
 						{
-							movies.length > 0 && movies.map((movie, i) => {
+							state.movies.length > 0 && state.movies.map((movie, i) => {
 								return (
 									<div className="col-sm-6 col-md-3 my-4" key={i}>
 										<div className="card shadow mb-4">
@@ -69,7 +82,7 @@ function SearchMovies(){
 							})
 						}
 					</div>
-					{ movies.length === 0 && <div className="alert alert-warning text-center">No se encontraron películas</div>}
+					{ state.movies.length === 0 && <div className="alert alert-warning text-center">No se encontraron películas</div>}
 				</>
 				:
 				<div className="alert alert-danger text-center my-4 fs-2">Eyyyy... ¿PUSISTE TU APIKEY?</div>
